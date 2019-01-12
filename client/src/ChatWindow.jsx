@@ -14,12 +14,25 @@ class ChatWindow extends Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		if (this.state.message) {
+			this.props.sendMessage(this.state.message, this.props.room);
 			this.setState({ message: '' });
 		}
 	}
 
 	handleChange = (event) => {
 		this.setState({ message: event.target.value });
+	}
+
+	closeWindow = (event) => {
+		this.props.leaveRoom(this.props.room);
+	}
+
+	componentDidMount = () => {
+		this.messageWindow.scrollTop = this.messageWindow.scrollHeight;
+	}
+
+	componentDidUpdate = () => {
+		this.messageWindow.scrollTop = this.messageWindow.scrollHeight;
 	}
 
 	render() {
@@ -37,7 +50,7 @@ class ChatWindow extends Component {
 					<h2>{partner}</h2>
 					<button onClick={this.closeWindow}>X</button>
 				</div>
-				<div className='chat-body'>
+				<div className='chat-body' ref={(win) => { this.messageWindow = win }}>
 					{messageList}
 				</div>
 				<div className='chat-input'>

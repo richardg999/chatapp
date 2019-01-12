@@ -12,23 +12,30 @@ def serve_static_index():
 @socket.on('connect')
 def on_connect():
     print('user connected')
+    emit('retrieve_active_users', broadcast=True)
 
 @socket.on('activate_user')
 def on_active_user(data):
-    user = data.get('username')
-    emit('user_activated', {'user': user}, broadcast=True)
+    username = data.get('username')
+    print('user activated: ' + str(username))
+    emit('user_activated', {'username': username}, broadcast=True)
 
 @socket.on('deactivate_user')
 def on_inactive_user(data):
-    user = data.get('username')
-    emit('user_deactivated', {'user': user}, broadcast=True)
+    username = data.get('username')
+    emit('user_deactivated', {'username': username}, broadcast=True)
 
 @socket.on('join_room')
 def on_join(data):
-    room = data['room']
+    room = data.get('room')
     join_room(room)
+    print('new room: ' + room)
     emit('open_room', {'room': room}, broadcast=True)
 
+@socket.on('send_message')
+def send_message(data):
+    room = data.get('room')
+    emit('message_sent', data, room=room)
 
 if __name__ == '__main__':
-    socket.run(app, debug=True)
+    socket.run(app)

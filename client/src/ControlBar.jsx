@@ -76,7 +76,6 @@ class ControlBar extends Component {
 		)
 	}
 
-
 }
 
 export default ControlBar;
