@@ -1,5 +1,4 @@
-# chatapp
-Chat App Server
+# Chat App Server
 
 Download and run the run.sh script
 
